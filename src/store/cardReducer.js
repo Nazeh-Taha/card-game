@@ -1,25 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const cardReducer = createSlice({
-  name: "Cards",
+  name: "cards",
   initialState: {
-    cardDeck: null,
+    remainingCards: 0,
+    deckId: null,
     compCard: null,
     playerCard: null,
   },
   reducers: {
     setCardDeck: (state, data) => {
-      state.cardDeck = data.payload;
+      state.remainingCards = data.payload.remaining;
+      state.deckId = data.payload.deck_id;
     },
-    setCompCard: (state, data) => {
-      state.years = data.payload;
+    setPlayersCard: (state, data) => {
+      state.playerCard = data.payload.cards[0];
+      state.compCard = data.payload.cards[1];
+      state.remainingCards = data.payload.remaining;
     },
-    setPlayerCard: (state, data) => {
-      state.playerCard = data.payload;
-    }
+  
   },
 });
 
-export const { setCardDeck, setCompCard, setPlayerCard } = cardReducer.actions;
+export const { setCardDeck, setPlayersCard } = cardReducer.actions;
 
 export default cardReducer.reducer;

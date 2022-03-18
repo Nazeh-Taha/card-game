@@ -1,21 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const matchResultsReducer = createSlice({
-  name: "MatchResults",
+  name: "matchResults",
   initialState: {
-    matchCount: 0,
+    matchCount: { player: 0, comp: 0 },
     compCount: 0,
-    playerCount: { player: 0, comp: 0 },
+    playerCount: 0,
   },
   reducers: {
-    setCompCount: (state, data) => {
-      state.cardDeck = state.cardDeck + 1;
+    setCompCount: (state) => {
+      state.compCount = state.compCount + 1;
     },
-    setPlayerCount: (state, data) => {
-      state.playerCard = state.playerCard + 1;
+    setPlayerCount: (state) => {
+      state.playerCount = state.playerCount + 1;
     },
     setGameCount: (state, data) => {
-      state.playerCard = data.payload;
+      state.matchCount = data.payload;
     },
   },
 });

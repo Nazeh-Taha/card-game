@@ -25,6 +25,7 @@ export const useStyles = makeStyles(() => ({
     height: "calc(100% / 3)",
     display: "flex",
     justifyContent: "center",
+    position: "relative",
   },
   cardField: {
     width: "100%",
@@ -48,5 +49,15 @@ export const useStyles = makeStyles(() => ({
       border: "3px solid #fff",
       height: "100%",
       borderRadius: 30,
+  },
+  compScoreContainer:{
+    position: "absolute",
+    top: -40,
+    right: -15,
+  },
+  playerScoreContainer:{
+    position: "absolute",
+    bottom: -40,
+    left: -15,
   }
 }));
