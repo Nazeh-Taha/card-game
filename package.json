@@ -2,6 +2,7 @@
   "name": "card-game",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://deckofcardsapi.com",
   "dependencies": {
     "@mui/styles": "^5.5.1",
     "@reduxjs/toolkit": "^1.8.0",
