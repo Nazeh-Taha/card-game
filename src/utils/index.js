@@ -36,3 +36,22 @@ export async function endPointCallCreator({
       };
     }
   }
+
+  export function formatCardsValue(cardValue) {
+    const cardsValue = {
+      KING: 13,
+      QUEEN: 12,
+      JACK: 11,
+      10: 10,
+      9: 9,
+      8: 8,
+      7: 7,
+      6: 6,
+      5: 5,
+      4: 4,
+      3: 3,
+      2: 2,
+      ACE: 1,
+    };
+    return cardsValue[cardValue];
+  }

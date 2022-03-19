@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import cardReducer from './cardReducer';
-import matchResultsReducer from './matchResultsReducer';
+import gameResultsReducer from './gameResultsReducer';
 
 export const store = configureStore({
   reducer: {
     cards: cardReducer,
-    matchResults: matchResultsReducer,
+    gameResults: gameResultsReducer,
   },
 });

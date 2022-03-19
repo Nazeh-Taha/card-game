@@ -18,10 +18,13 @@ export const cardReducer = createSlice({
       state.compCard = data.payload.cards[1];
       state.remainingCards = data.payload.remaining;
     },
-  
+    setResetPlayersCard: (state) => {
+      state.playerCard = null;
+      state.compCard = null;
+    },
   },
 });
 
-export const { setCardDeck, setPlayersCard } = cardReducer.actions;
+export const { setCardDeck, setPlayersCard, setResetPlayersCard } = cardReducer.actions;
 
 export default cardReducer.reducer;

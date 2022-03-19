@@ -5,7 +5,9 @@ import cardDeck from "../../assets/images/cards-deck.png";
 import { shuffleCards, drawCards } from "../../api/card-api";
 import { setCardDeck, setPlayersCard } from "../../store/cardReducer";
 import PlayerAvatar from "../../components/PlayerAvatar";
-import { setCompCount, setPlayerCount } from "../../store/matchResultsReducer";
+import { setCompCount, setPlayerCount } from "../../store/gameResultsReducer";
+import ResultBoard from "./ResultBoard";
+import { formatCardsValue } from "../../utils";
 
 export default function CardGame() {
   const classes = useStyles();
@@ -13,28 +15,35 @@ export default function CardGame() {
   const { remainingCards, deckId, compCard, playerCard } = useSelector(
     (state) => state.cards
   );
-  const { playerCount, compCount } = useSelector((state) => state.matchResults);
-  const handleStartGame = () => {
+  const { playerCount, compCount } = useSelector((state) => state.gameResults);
+
+  function handleStartGame(){
     shuffleCards().then((data) => {
       dispatch(setCardDeck(data.payload));
     });
-  };
-  const handleDrawCard = (e) => {
-    e.preventDefault();
+  }
+
+  function handleDrawCard(){
     drawCards(deckId).then((data) => {
       dispatch(setPlayersCard(data.payload));
       handleFindTheWinner(data.payload.cards);
     });
-  };
+  }
+
   function handleDragOver(e) {
     e.preventDefault();
   }
 
-  const handleFindTheWinner = (cards) => {
-    cards[0].value > cards[1].value
-      ? dispatch(setPlayerCount())
-      : dispatch(setCompCount());
-  };
+
+  function handleFindTheWinner(cards) {
+    if (formatCardsValue(cards[0].value) > formatCardsValue(cards[1].value)) {
+      dispatch(setPlayerCount());
+    } else if (
+      formatCardsValue(cards[0].value) < formatCardsValue(cards[1].value)
+    ) {
+      dispatch(setCompCount());
+    }
+  }
 
   return (
     <div className={classes.container}>
@@ -45,14 +54,22 @@ export default function CardGame() {
             <PlayerAvatar type="comp" score={compCount} />
           </div>
           <div className={classes.cardShowContainer}>
-            <img src={compCard?.image} alt="card" width="100%" height="100%" />
+            {compCard && (
+              <img
+                src={compCard?.image}
+                alt="card"
+                width="100%"
+                height="100%"
+              />
+            )}
           </div>
         </div>
         {/* ----------------------Card Deck section---------------------------- */}
         <div className={classes.cardField}>
+          <ResultBoard handleStartGame={handleStartGame} remainingCards={remainingCards}/>
           <div className={classes.cardDeckContainer}>
             {remainingCards > 0 ? (
-              <img src={cardDeck} alt="cards deck" draggable />
+              <img src={cardDeck} alt="cards deck" draggable onClick={handleDrawCard}/>
             ) : (
               <div className={classes.cardShowContainer} />
             )}
@@ -72,14 +89,19 @@ export default function CardGame() {
             className={classes.cardShowContainer}
             onDrop={handleDrawCard}
             onDragOver={handleDragOver}
+            onClick={handleDrawCard}
           >
-            <img src={playerCard?.image} alt="card" width="100%" height="100%" />
+            {playerCard && (
+              <img
+                src={playerCard?.image}
+                alt="card"
+                width="100%"
+                height="100%"
+              />
+            )}
           </div>
         </div>
       </div>
-      <button type="button" onClick={handleStartGame}>
-        start the game
-      </button>
     </div>
   );
 }
