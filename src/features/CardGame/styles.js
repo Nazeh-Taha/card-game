@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 
-export const useStyles = makeStyles(() => ({
+export const useStyles = makeStyles((them) => ({
   container: {
     background: "#052a01",
     width: "100%",
@@ -15,10 +15,13 @@ export const useStyles = makeStyles(() => ({
     boxShadow: "-3px 2px 48px 5px rgba(0,0,0,0.59)",
     height: "90%",
     width: "60%",
-    outline: "15px ridge #6a2b0e",
+    border: "15px ridge #6a2b0e",
     borderRadius: 100,
     boxSizing: "border-box",
     padding: 20,
+    ['@media (max-width:780px)']: { // eslint-disable-line no-useless-computed-key
+      width: '100%'
+    }
   },
   playersField: {
     width: "100%",

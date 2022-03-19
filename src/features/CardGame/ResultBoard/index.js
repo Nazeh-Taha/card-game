@@ -22,11 +22,11 @@ export default function ResultBoard(props) {
       } else if (playerCount < compCount) {
         dispatch(setRoundCompCount());
       }
-      dispatch(setResetPlayersCard()) // reset the players cards
+      dispatch(setResetPlayersCard()); // reset the players cards
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [remainingCards]);
-  
+
   useEffect(() => {
     handleCountGameResult();
   }, [handleCountGameResult]);
@@ -48,7 +48,9 @@ export default function ResultBoard(props) {
           onClick={handleStartGame}
           className={classes.button}
         >
-          let's start
+          {roundCompCount > 0 || roundPlayerCount > 0
+            ? "Start a new round"
+            : "let's start"}
         </button>
       )}
     </div>
