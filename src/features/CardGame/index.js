@@ -5,7 +5,7 @@ import cardDeck from "../../assets/images/cards-deck.png";
 import { shuffleCards, drawCards } from "../../api/card-api";
 import { setCardDeck, setPlayersCard } from "../../store/cardReducer";
 import PlayerAvatar from "../../components/PlayerAvatar";
-import { setCompCount, setPlayerCount } from "../../store/gameResultsReducer";
+import { setCompCount, setNoteMessage, setPlayerCount } from "../../store/gameResultsReducer";
 import ResultBoard from "./ResultBoard";
 import { formatCardsValue } from "../../utils";
 
@@ -15,12 +15,16 @@ export default function CardGame() {
   const { remainingCards, deckId, compCard, playerCard } = useSelector(
     (state) => state.cards
   );
-  const { playerCount, compCount } = useSelector((state) => state.gameResults);
+  const { playerCount, compCount, noteMessage } = useSelector((state) => state.gameResults);
 
   function handleStartGame(){
     shuffleCards().then((data) => {
       dispatch(setCardDeck(data.payload));
+      handleShowMessage("Drag or click on cards deck for card draw")
     });
+  }
+  function handleShowMessage(message) {
+    dispatch(setNoteMessage(message))
   }
 
   function handleDrawCard(){
@@ -34,14 +38,17 @@ export default function CardGame() {
     e.preventDefault();
   }
 
-
   function handleFindTheWinner(cards) {
     if (formatCardsValue(cards[0].value) > formatCardsValue(cards[1].value)) {
       dispatch(setPlayerCount());
+      remainingCards > 2 && handleShowMessage("You win - Draw!");
     } else if (
       formatCardsValue(cards[0].value) < formatCardsValue(cards[1].value)
     ) {
       dispatch(setCompCount());
+      remainingCards > 2 && handleShowMessage("Computer wins - Draw!");
+    }else{
+      remainingCards > 2 && handleShowMessage("Tie - Draw!");
     }
   }
 
@@ -67,6 +74,7 @@ export default function CardGame() {
         {/* ----------------------Card Deck section---------------------------- */}
         <div className={classes.cardField}>
           <ResultBoard handleStartGame={handleStartGame} remainingCards={remainingCards}/>
+          <h3 style={{ textAlign: 'center', color:"#fff" }}>{noteMessage}</h3>
           <div className={classes.cardDeckContainer}>
             {remainingCards > 0 ? (
               <img src={cardDeck} alt="cards deck" draggable onClick={handleDrawCard}/>

@@ -24,6 +24,7 @@ export default function ResultBoard(props) {
       }
       dispatch(setResetPlayersCard()) // reset the players cards
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [remainingCards]);
   
   useEffect(() => {

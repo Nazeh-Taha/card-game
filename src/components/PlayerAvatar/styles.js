@@ -16,12 +16,12 @@ export const useStyles = makeStyles(() => ({
     },
   },
   scoreContainer: {
-      padding: "5px 10px",
-        "& h5": {
-            margin: 0
-        },
-        "& h6": {
-            margin: 0
-        }
-  }
+    padding: "5px 10px",
+    "& h5": {
+      margin: 0,
+    },
+    "& h6": {
+      margin: 0,
+    },
+  },
 }));
