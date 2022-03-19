@@ -5,11 +5,15 @@ import cardDeck from "../../assets/images/cards-deck.png";
 import { shuffleCards, drawCards } from "../../api/card-api";
 import { setCardDeck, setPlayersCard } from "../../store/cardReducer";
 import PlayerAvatar from "../../components/PlayerAvatar";
+import { setCompCount, setPlayerCount } from "../../store/matchResultsReducer";
 
 export default function CardGame() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { remainingCards, deckId } = useSelector((state) => state.cards);
+  const { remainingCards, deckId, compCard, playerCard } = useSelector(
+    (state) => state.cards
+  );
+  const { playerCount, compCount } = useSelector((state) => state.matchResults);
   const handleStartGame = () => {
     shuffleCards().then((data) => {
       dispatch(setCardDeck(data.payload));
@@ -19,20 +23,30 @@ export default function CardGame() {
     e.preventDefault();
     drawCards(deckId).then((data) => {
       dispatch(setPlayersCard(data.payload));
+      handleFindTheWinner(data.payload.cards);
     });
   };
   function handleDragOver(e) {
     e.preventDefault();
   }
+
+  const handleFindTheWinner = (cards) => {
+    cards[0].value > cards[1].value
+      ? dispatch(setPlayerCount())
+      : dispatch(setCompCount());
+  };
+
   return (
     <div className={classes.container}>
       <div className={classes.cardTable}>
         {/* ----------------------computer field section---------------------------- */}
         <div className={classes.playersField}>
           <div className={classes.compScoreContainer}>
-            <PlayerAvatar type="comp" score={0} />
+            <PlayerAvatar type="comp" score={compCount} />
           </div>
-          <div className={classes.cardShowContainer}></div>
+          <div className={classes.cardShowContainer}>
+            <img src={compCard?.image} alt="card" width="100%" height="100%" />
+          </div>
         </div>
         {/* ----------------------Card Deck section---------------------------- */}
         <div className={classes.cardField}>
@@ -40,7 +54,7 @@ export default function CardGame() {
             {remainingCards > 0 ? (
               <img src={cardDeck} alt="cards deck" draggable />
             ) : (
-              <div className={classes.cardShowContainer}/>
+              <div className={classes.cardShowContainer} />
             )}
             <h5>{remainingCards} - cards left</h5>
           </div>
@@ -51,14 +65,16 @@ export default function CardGame() {
           style={{ alignItems: "flex-end" }}
         >
           <div className={classes.playerScoreContainer}>
-            <PlayerAvatar type="player" score={0} />
+            <PlayerAvatar type="player" score={playerCount} />
           </div>
 
           <div
             className={classes.cardShowContainer}
             onDrop={handleDrawCard}
             onDragOver={handleDragOver}
-          ></div>
+          >
+            <img src={playerCard?.image} alt="card" width="100%" height="100%" />
+          </div>
         </div>
       </div>
       <button type="button" onClick={handleStartGame}>
